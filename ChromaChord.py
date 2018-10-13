@@ -14,3 +14,7 @@ class ChromaChord(Chord.Chord):
         blue_freq = get_frequency(normalize_color_value(b))
 
         super().__init__((red_freq, green_freq, blue_freq), (volume, volume, volume))
+
+        self.chord[0].color = (r, g, b)
+        self.chord[1].color = (r, g, b)
+        self.chord[2].color = (r, g, b)

@@ -11,6 +11,8 @@ class ChromaNote(Note.Note):
 
         avg = (r + g + b) / 3
 
+        self.color = (r, g, b)
+
         super().__init__(get_frequency(normalize_color_value(avg)), volume)
 
 

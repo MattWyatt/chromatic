@@ -4,11 +4,13 @@ import Player
 
 
 class ImagePlayer:
-    def __init__(self, path):
+    def __init__(self, path, player=None):
         self.image = Image.open(path).convert("RGB").resize((16, 16))
         self.pixels = np.asarray(self.image).reshape(self.image.width * self.image.height, 3)
+        self.player = player
+        if not self.player:
+            self.player = Player.Player(3)
 
     def play(self):
-        p = Player.Player(3)
         for pixel in self.pixels:
-            p.play_color(pixel)
+            self.player.play_color(pixel)

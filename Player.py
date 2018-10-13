@@ -5,17 +5,21 @@ import ChromaChord
 
 
 class Player:
-    def __init__(self, channels):
+    def __init__(self, channels, visualizer=None):
         self.num_channels = channels
         self.channels = []
         for i in range(0, self.num_channels):
             self.channels.append(pygame.mixer.Channel(i))
 
+        self.visualizer = visualizer
+
     def play_note(self, note):
         sound = pygame.mixer.Sound(note.samples)
-        self.channels[0].queue(sound)
+        self.channels[0].play(sound)
         for i in range(1, self.num_channels):
-            self.channels[i].queue(pygame.mixer.Sound(np.zeros((note.sample_rate,)).astype(np.int16)))
+            self.channels[i].play(pygame.mixer.Sound(np.zeros((note.sample_rate,)).astype(np.int16)))
+
+        self.visualizer.update([note])
 
     def play_chord(self, chord):
         if not chord.size <= self.num_channels:
@@ -23,7 +27,9 @@ class Player:
 
         for note, i in zip(chord.chord, range(0, self.num_channels)):
             sound = pygame.mixer.Sound(note.samples)
-            self.channels[i].queue(sound)
+            self.channels[i].play(sound)
+
+        self.visualizer.update(chord.chord)
 
     def play_color(self, color, volume=0.5):
         def normalize_color_value(c):
